@@ -1,38 +1,141 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FADE WIN</title>
+<title>FADE WIN - Tap & Earn</title>
+
+<!-- MONETAG - PASTE YOUR CODE HERE -->
+<!-- Example from Monetag: <script src="//..."></script> -->
+
 <style>
-body{background:#0f172a;color:white;text-align:center;font-family:Arial;padding:20px}
-h1{color:#facc15}
-button{padding:20px 40px;font-size:22px;background:#facc15;border:none;border-radius:15px;font-weight:bold}
-#points{font-size:48px;margin:20px}
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a1220;color:white;font-family:'Inter',sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding:20px;overflow-x:hidden}
+.logo{font-family:'Orbitron',sans-serif;font-size:32px;font-weight:900;color:#FFD60A;letter-spacing:2px;margin-top:30px;text-shadow:0 0 20px rgba(255,214,10,0.5);animation:glow 2s infinite alternate}
+@keyframes glow{from{text-shadow:0 0 10px #FFD60A}to{text-shadow:0 0 30px #FFD60A,0 0 40px #FFD60A}}
+.score-box{margin-top:30px;text-align:center}
+.score-label{color:#7a8aaa;font-size:14px;letter-spacing:3px;text-transform:uppercase}
+.score{font-family:'Orbitron',sans-serif;font-size:64px;font-weight:900;margin:10px 0;line-height:1}
+.level-bar{width:260px;height:8px;background:#1a2744;border-radius:10px;overflow:hidden;margin:15px auto}
+.level-fill{height:100%;background:linear-gradient(90deg,#FFD60A,#FFA500);width:40%;transition:width 0.3s}
+.tap-area{position:relative;margin-top:40px}
+.tap-btn{width:260px;height:260px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#FFEB3B,#FFD60A 40%,#FFA000);border:none;font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;color:#0a1220;cursor:pointer;box-shadow:0 0 0 12px rgba(255,214,10,0.15),0 20px 60px rgba(255,214,10,0.4);transition:transform 0.1s,box-shadow 0.1s;user-select:none;-webkit-tap-highlight-color:transparent;position:relative;z-index:2}
+.tap-btn:active{transform:scale(0.92)}
+.fade-ring{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:260px;height:260px;border-radius:50%;border:3px solid #FFD60A;opacity:0;pointer-events:none}
+.animate-ring{animation:fadeRing 0.8s ease-out}
+@keyframes fadeRing{0%{transform:translate(-50%,-50%) scale(0.8);opacity:0.8}100%{transform:translate(-50%,-50%) scale(1.8);opacity:0}}
+.points-popup{position:absolute;top:40%;left:50%;transform:translate(-50%,-50%);font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;color:#FFD60A;pointer-events:none;opacity:0;animation:popUp 0.8s ease-out forwards}
+@keyframes popUp{0%{transform:translate(-50%,-50%) translateY(0);opacity:1}100%{transform:translate(-50%,-50%) translateY(-80px);opacity:0}}
+.stats{display:flex;gap:30px;margin-top:40px}
+.stat{text-align:center}
+.stat b{display:block;font-family:'Orbitron';font-size:20px;color:#FFD60A}
+.stat span{font-size:12px;color:#7a8aaa}
+.bonus-btn{margin-top:30px;background:linear-gradient(90deg,#1a2744,#23365f);border:1px solid #2a3d66;color:#FFD60A;padding:12px 24px;border-radius:30px;font-weight:700;cursor:pointer}
+.ad-label{margin-top:30px;font-size:11px;color:#3a4a6a;letter-spacing:2px}
+.footer{margin-top:auto;padding:20px;font-size:12px;color:#3a4a6a}
 </style>
 </head>
 <body>
-<h1>FADE WIN</h1>
-<div id="points">0</div>
-<button onclick="tap()">TAP TO WIN POINTS</button>
-<p id="msg">Tap 5 times to see bonus</p>
+
+<div class="logo">FADE WIN</div>
+
+<div class="score-box">
+<div class="score-label">Total Points</div>
+<div class="score" id="score">0</div>
+<div class="level-bar"><div class="level-fill" id="levelFill"></div></div>
+<div style="font-size:13px;color:#7a8aaa">Level <span id="level">1</span> • <span id="nextBonus">100 taps to bonus</span></div>
+</div>
+
+<div class="tap-area" id="tapArea">
+<div class="fade-ring" id="fadeRing"></div>
+<button class="tap-btn" id="tapBtn">TAP TO WIN</button>
+</div>
+
+<div class="stats">
+<div class="stat"><b id="taps">0</b><span>TAPS</span></div>
+<div class="stat"><b id="perTap">+1</b><span>PER TAP</span></div>
+<div class="stat"><b id="energy">∞</b><span>ENERGY</span></div>
+</div>
+
+<button class="bonus-btn" id="bonusBtn">🎁 CLAIM BONUS x2 (Watch Ad)</button>
+
+<div class="ad-label">ADVERTISEMENT</div>
+
+<div class="footer">FADE WIN • Legit Tap Game • Points saved automatically</div>
 
 <script>
-let score=0;
-let taps=0;
-function tap(){
-  score+=10;
-  taps++;
-  document.getElementById('points').innerText=score;
-  if(taps%5==0){
-    document.getElementById('msg').innerText="Loading bonus...";
-    // PASTE YOUR MONETAG DIRECT LINK HERE
-    // window.open('YOUR_MONETAG_LINK','_blank');
-    setTimeout(()=>{document.getElementById('msg').innerText="Bonus ready! Keep tapping!";},1000);
-  }
+let score = parseInt(localStorage.getItem('fade_score')||'0');
+let taps = parseInt(localStorage.getItem('fade_taps')||'0');
+let level = parseInt(localStorage.getItem('fade_level')||'1');
+
+const scoreEl = document.getElementById('score');
+const tapsEl = document.getElementById('taps');
+const levelEl = document.getElementById('level');
+const levelFill = document.getElementById('levelFill');
+const nextBonusEl = document.getElementById('nextBonus');
+const perTapEl = document.getElementById('perTap');
+const tapBtn = document.getElementById('tapBtn');
+const tapArea = document.getElementById('tapArea');
+const fadeRing = document.getElementById('fadeRing');
+const bonusBtn = document.getElementById('bonusBtn');
+
+function updateUI(){
+  scoreEl.textContent = score.toLocaleString();
+  tapsEl.textContent = taps;
+  levelEl.textContent = level;
+  let progress = (taps % 100);
+  levelFill.style.width = progress + '%';
+  nextBonusEl.textContent = (100 - progress) + ' taps to bonus';
+  perTapEl.textContent = '+' + level;
+  localStorage.setItem('fade_score', score);
+  localStorage.setItem('fade_taps', taps);
+  localStorage.setItem('fade_level', level);
 }
+
+function spawnPopup(points, x, y){
+  const el = document.createElement('div');
+  el.className = 'points-popup';
+  el.textContent = '+' + points;
+  el.style.left = x + 'px';
+  el.style.top = y + 'px';
+  tapArea.appendChild(el);
+  setTimeout(()=>el.remove(),800);
+}
+
+function triggerFade(){
+  fadeRing.classList.remove('animate-ring');
+  void fadeRing.offsetWidth;
+  fadeRing.classList.add('animate-ring');
+}
+
+tapBtn.addEventListener('pointerdown', (e)=>{
+  const rect = tapArea.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  taps++;
+  score += level;
+  if(taps % 100 === 0){
+    level++;
+    spawnPopup('LEVEL UP! ' + level, 130, 20);
+  }
+  spawnPopup(level, x, y);
+  triggerFade();
+  updateUI();
+  if(navigator.vibrate) navigator.vibrate(20);
+});
+
+bonusBtn.addEventListener('click', ()=>{
+  alert('🎁 Bonus! If Monetag Rewarded Ad code is added, ad will show here before bonus.');
+  score += 50 * level;
+  updateUI();
+});
+
+updateUI();
+setInterval(updateUI, 1000);
 </script>
 
-<!-- PASTE YOUR MONETAG POP-UNDER / PUSH CODE HERE -->
+<!-- PASTE MONETAG CODES HERE BEFORE </body> -->
 
 </body>
 </html>
