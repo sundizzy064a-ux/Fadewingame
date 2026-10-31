@@ -3,90 +3,84 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fadewin - Play Games & Win Money</title>
+<title>FADEWIN - Play Games & Win</title>
 <meta name="monetag" content="c572032c2c1d4d3367fce7ba639a20da">
-<!-- Monetag Popunder - Your Money Maker -->
 <script>(function(s){s.dataset.zone='12160490',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
-
 <style>
-* { margin:0; padding:0; box-sizing:border-box; }
-body { background:#0a0a0a; color:white; font-family: -apple-system, sans-serif; text-align:center; }
-.header { background: linear-gradient(135deg,#00ff88,#00cc6a); color:black; padding:20px; }
-.header h1 { font-size:32px; font-weight:900; }
-.games { display:grid; grid-template-columns:1fr; gap:15px; padding:20px; max-width:400px; margin:0 auto; }
-.card { background:#1a1a1a; border:1px solid #333; border-radius:16px; padding:20px; }
-.card h3 { color:#00ff88; margin-bottom:10px; }
-.btn { background:#00ff88; color:black; border:none; padding:14px 28px; border-radius:12px; font-weight:800; font-size:16px; width:100%; cursor:pointer; }
-.score { font-size:28px; margin:10px 0; color:#00ff88; }
-.tap-area { background:#222; height:120px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:22px; margin:15px 0; user-select:none; }
-.footer { padding:20px; color:#666; font-size:13px; }
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0a;color:#fff;font-family:system-ui,Arial,sans-serif}
+.header{text-align:center;padding:50px 20px 30px;background:radial-gradient(circle at 50% 0%, #00ff8844, transparent 60%)}
+.header h1{font-size:44px;color:#00ff88;font-weight:900;letter-spacing:1px}
+.header p{color:#aaa;margin-top:10px}
+.btn-play{background:#00ff88;color:#000;border:none;padding:18px 44px;border-radius:50px;font-weight:900;font-size:19px;margin-top:22px;cursor:pointer;box-shadow:0 8px 24px #00ff8855}
+.games{max-width:430px;margin:0 auto;padding:20px;display:grid;gap:18px}
+.card{background:#151515;border:1px solid #222;border-radius:20px;padding:22px}
+.card h3{color:#00ff88;margin-bottom:6px}
+.muted{color:#888;font-size:13px;margin-bottom:12px}
+.score{font-size:32px;font-weight:900;color:#00ff88;margin:10px 0}
+.tapBox{background:#222;border-radius:16px;height:120px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;cursor:pointer;user-select:none;margin:12px 0;transition:0.1s}
+.tapBox:active{transform:scale(0.96);background:#2a2a2a}
+.btn{background:#00ff88;color:#000;border:none;padding:14px;border-radius:12px;font-weight:800;width:100%;cursor:pointer;font-size:16px}
+.btn:active{transform:scale(0.98)}
+.row{display:flex;gap:8px}
+.footer{text-align:center;padding:30px;color:#444;font-size:11px}
 </style>
 </head>
 <body>
 
 <div class="header">
 <h1>🎮 FADEWIN</h1>
-<p>Play Games • Earn Points • Win!</p>
-<p style="margin-top:8px; font-size:14px;">💰 $0.00 Balance - Keep Playing!</p>
+<h2 style="margin-top:12px;font-size:22px;">Play Games & Win Real Money</h2>
+<p>Your site is live! Monetag verification active.</p>
+<button class="btn-play" onclick="document.getElementById('games').scrollIntoView({behavior:'smooth'})">START PLAYING ↓</button>
 </div>
 
-<div class="games">
+<div class="games" id="games">
 
 <div class="card">
 <h3>👆 TAP RUSH</h3>
-<p>Tap as fast as you can!</p>
+<p class="muted">Tap as fast as you can in 10 seconds</p>
 <div class="score" id="tapScore">0</div>
-<div class="tap-area" id="tapArea" onclick="tapGame()">TAP ME!</div>
-<button class="btn" onclick="tapGame()">TAP!</button>
+<div class="tapBox" id="tapBox" onclick="doTap()">TAP ME!</div>
+<div class="row"><button class="btn" onclick="startTap()">START / RESET</button></div>
+<p class="muted" id="tapTime" style="margin-top:10px">Click START</p>
 </div>
 
 <div class="card">
 <h3>🎡 SPIN & WIN</h3>
-<p>Spin to win bonus points</p>
-<div class="score" id="spinScore">🎯</div>
-<button class="btn" onclick="spinGame()">SPIN NOW</button>
+<p class="muted">Test your luck</p>
+<div class="score" id="spinResult">🎯 Ready</div>
+<button class="btn" onclick="doSpin()">SPIN NOW</button>
 </div>
 
 <div class="card">
 <h3>🧠 QUICK MATH</h3>
-<p id="mathQ">5 + 3 = ?</p>
+<p class="muted">Solve to earn points</p>
+<p id="mathQ" style="font-size:22px;margin:10px 0;font-weight:700">5 + 3 = ?</p>
 <div class="score" id="mathScore">0 Correct</div>
-<div style="display:flex; gap:10px;">
-<button class="btn" style="flex:1;" onclick="mathGame(8)">8</button>
-<button class="btn" style="flex:1;" onclick="mathGame(7)">7</button>
-<button class="btn" style="flex:1;" onclick="mathGame(9)">9</button>
+<div class="row">
+<button class="btn" onclick="checkMath(1)">1</button>
+<button class="btn" onclick="checkMath(8)">8</button>
+<button class="btn" onclick="checkMath(7)">7</button>
+<button class="btn" onclick="checkMath(9)">9</button>
 </div>
 </div>
 
 </div>
 
-<div class="footer">
-<p>Fadewin.com - Play & Earn</p>
-<p>Ads support us - Thanks for playing!</p>
-<p style="margin-top:10px;">Your site: sundizzy064a-ux.github.io ✅ Verified</p>
-</div>
+<div class="footer">sundizzy064a-ux.github.io ✅ Verified<br>Monetag Zone 12160490 Active - Earn Per Click</div>
 
 <script>
-let taps=0, mathCorrect=0;
-let a=5,b=3;
-function tapGame(){
- taps++;
- document.getElementById('tapScore').innerText=taps;
- if(taps%10==0){ alert('🔥 '+taps+' taps! Keep going!'); }
-}
-function spinGame(){
- const prizes=['10 Points!','50 Points!','5 Points!','JACKPOT 100!','20 Points!'];
- const prize=prizes[Math.floor(Math.random()*prizes.length)];
- document.getElementById('spinScore').innerText=prize;
-}
-function mathGame(ans){
- if(ans===(a+b)){
-  mathCorrect++;
-  document.getElementById('mathScore').innerText=mathCorrect+' Correct';
-  a=Math.floor(Math.random()*10); b=Math.floor(Math.random()*10);
-  document.getElementById('mathQ').innerText=a+' + '+b+' = ?';
- } else { alert('Try again!'); }
-}
+let taps=0,timer=null,timeLeft=10,playing=false;
+function startTap(){taps=0;timeLeft=10;playing=true;document.getElementById('tapScore').innerText='0';document.getElementById('tapTime').innerText=timeLeft+'s left';clearInterval(timer);timer=setInterval(()=>{timeLeft--;document.getElementById('tapTime').innerText=timeLeft+'s left';if(timeLeft<=0){clearInterval(timer);playing=false;document.getElementById('tapTime').innerText='Done! Score: '+taps;}},1000);}
+function doTap(){if(!playing){startTap();return;}taps++;document.getElementById('tapScore').innerText=taps;document.getElementById('tapBox').style.transform='scale(0.94)';setTimeout(()=>document.getElementById('tapBox').style.transform='scale(1)',80);}
+
+function doSpin(){const prizes=['10 Points! 🎉','50 Points! 🔥','5 Points','JACKPOT 100! 💰','Try Again!','20 Points!'];const r=prizes[Math.floor(Math.random()*prizes.length)];document.getElementById('spinResult').innerText=r;document.getElementById('spinResult').style.transform='scale(1.2)';setTimeout(()=>document.getElementById('spinResult').style.transform='scale(1)',200);}
+
+let correct=0,a=5,b=3;
+function newMath(){a=Math.floor(Math.random()*15)+1;b=Math.floor(Math.random()*15)+1;document.getElementById('mathQ').innerText=a+' + '+b+' = ?';}
+function checkMath(ans){let real=a+b;let options=[real, real+1, real-1, real+2].sort(()=>Math.random()-0.5);if(ans===real){correct++;document.getElementById('mathScore').innerText=correct+' Correct';newMath();}else{if(Math.random()>0.5)newMath();}}
+newMath();
 </script>
 </body>
 </html>
