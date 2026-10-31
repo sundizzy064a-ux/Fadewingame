@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FADE WIN</title>
+<style>
+body{background:#0f172a;color:white;text-align:center;font-family:Arial;padding:20px}
+h1{color:#facc15}
+button{padding:20px 40px;font-size:22px;background:#facc15;border:none;border-radius:15px;font-weight:bold}
+#points{font-size:48px;margin:20px}
+</style>
+</head>
+<body>
+<h1>FADE WIN</h1>
+<div id="points">0</div>
+<button onclick="tap()">TAP TO WIN POINTS</button>
+<p id="msg">Tap 5 times to see bonus</p>
+
+<script>
+let score=0;
+let taps=0;
+function tap(){
+  score+=10;
+  taps++;
+  document.getElementById('points').innerText=score;
+  if(taps%5==0){
+    document.getElementById('msg').innerText="Loading bonus...";
+    // PASTE YOUR MONETAG DIRECT LINK HERE
+    // window.open('YOUR_MONETAG_LINK','_blank');
+    setTimeout(()=>{document.getElementById('msg').innerText="Bonus ready! Keep tapping!";},1000);
+  }
+}
+</script>
+
+<!-- PASTE YOUR MONETAG POP-UNDER / PUSH CODE HERE -->
+
+</body>
+</html>
